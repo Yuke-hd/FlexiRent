@@ -12,8 +12,12 @@ public class FlexiRentSystem {
 		FlexiRentSystem admin = new FlexiRentSystem();
 		admin.addProp();
 		//admin.addProp();
-		System.out.println("Property ID:" + admin.allProp.get(0).getPropId());
+		System.out.println();
+		System.out.println();
 		admin.rentProp();
+		System.out.println();
+		System.out.println();
+		admin.returnProp();
 	}
 
 	public void addProp() {
@@ -45,15 +49,7 @@ public class FlexiRentSystem {
 	}
 
 	public boolean rentProp() {
-		System.out.println("Please input property ID:");
-		String _propId = sc.nextLine();
-		int objNum = -1;
-		for (int i = 0; i < allProp.size(); i++) {
-			if (_propId.equals(allProp.get(i).getPropId())) {
-				objNum = i;
-				System.out.println("valid property ID");
-			} 
-		}
+		int objNum = inputPropID();
 		if (objNum<0) {
 			System.out.println("Invalid property ID");
 			return false;
@@ -62,7 +58,7 @@ public class FlexiRentSystem {
 		String _custID = sc.nextLine();
 		DateTime _startDate = inputDate();
 		System.out.println("How many days?:");
-		int _rentDay = sc.nextInt();
+		int _rentDay = sc.nextInt();sc.nextLine();
 		return allProp.get(objNum).rent(_custID, _startDate, _rentDay);
 	}
 	private DateTime inputDate() {
@@ -76,4 +72,28 @@ public class FlexiRentSystem {
 		return _startDate;
 	}
 
+	public boolean returnProp() {
+		int objNum = inputPropID();
+		if (objNum<0) {
+			System.out.println("Invalid property ID");
+			return false;
+		}
+		
+		DateTime returnDate = new DateTime();
+		allProp.get(objNum).returnProperty(returnDate);
+		return true;
+	}
+	
+	private int inputPropID() {
+		System.out.println("Please input property ID:");
+		String _propId = sc.nextLine();
+		int objNum = -1;
+		for (int i = 0; i < allProp.size(); i++) {
+			if (_propId.equals(allProp.get(i).getPropId())) {
+				objNum = i;
+				System.out.println("valid property ID");
+			} 
+		}
+		return objNum;
+	}
 }

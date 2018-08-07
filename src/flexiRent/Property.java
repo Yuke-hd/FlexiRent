@@ -76,4 +76,23 @@ public abstract class Property {
 		return true;
 	}
 
+	public boolean returnProperty(DateTime returnDate) {
+		DateTime today = new DateTime();
+		String customerId = getCustID();
+		String recordID = setRecordID(getPropId(),customerId);
+		Record record = new Record(returnDate,0.0,0.0);
+		this.setStat0();
+		propRecord.addFirst(record);
+		if (propRecord.size() == 10) {
+			propRecord.pollLast();
+		}
+		System.out.println(propRecord.get(0).toString());
+		System.out.println(propRecord.get(1).toString());
+		return true;
+	}
+	
+	private String getCustID() {
+		String[] recordPart = propRecord.get(0).getRecordID().split("_");
+		return recordPart[1];
+	}
 }

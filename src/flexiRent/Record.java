@@ -7,10 +7,10 @@ public class Record {
 	private DateTime _returnDate = new DateTime();
 	private double _rentFee;
 	private double _lateFee;
-	public Record(String recordID, DateTime startDate, DateTime endDate,DateTime returnDate, double rentFee, double lateFee) {
-		_recordID = recordID.replace("/","");
+	public Record(/*String recordID, DateTime startDate, DateTime endDate,*/DateTime returnDate, double rentFee, double lateFee) {
+		/*_recordID = recordID.replace("/","");
 		_startDate=startDate;
-		_endDate=endDate;
+		_endDate=endDate;*/
 		_returnDate=returnDate;
 		_rentFee=rentFee;
 		_lateFee=lateFee;
@@ -20,6 +20,10 @@ public class Record {
 		_startDate=startDate;
 		_endDate=endDate;
 	}
+	public String getRecordID() {
+		return _recordID;
+	}
+
 	@Override
 	public String toString() {
 		return _recordID+":"+_startDate.toString()+":"+_endDate.toString()+":"+_returnDate.toString()
