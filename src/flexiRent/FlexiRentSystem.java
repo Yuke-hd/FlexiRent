@@ -11,9 +11,9 @@ public class FlexiRentSystem {
 		// TODO Auto-generated method stub
 		FlexiRentSystem admin = new FlexiRentSystem();
 		admin.addProp();
-		admin.addProp();
+		//admin.addProp();
 		System.out.println("Property ID:" + admin.allProp.get(0).getPropId());
-		admin.rent();
+		admin.rentProp();
 	}
 
 	public void addProp() {
@@ -44,7 +44,7 @@ public class FlexiRentSystem {
 		}
 	}
 
-	public boolean rent() {
+	public boolean rentProp() {
 		System.out.println("Please input property ID:");
 		String _propId = sc.nextLine();
 		int objNum = -1;
@@ -60,7 +60,12 @@ public class FlexiRentSystem {
 		}
 		System.out.println("Customer id:");
 		String _custID = sc.nextLine();
-		// setCustID(_custID);
+		DateTime _startDate = inputDate();
+		System.out.println("How many days?:");
+		int _rentDay = sc.nextInt();
+		return allProp.get(objNum).rent(_custID, _startDate, _rentDay);
+	}
+	private DateTime inputDate() {
 		System.out.println("Rent date (dd/mm/yyyy):");
 		String _inputDate = sc.nextLine();
 		String[] _datePart = _inputDate.split("/");
@@ -68,12 +73,7 @@ public class FlexiRentSystem {
 		int _month = Integer.parseInt(_datePart[1]);
 		int _year = Integer.parseInt(_datePart[2]);
 		DateTime _startDate = new DateTime(_day, _month, _year);
-		System.out.println("How many days?:");
-		int _rentDay = sc.nextInt();
-		DateTime _endDate = new DateTime(_startDate, _rentDay);
-		allProp.get(objNum).setStat1();
-		System.out.println(_custID + " rent " + allProp.get(objNum).getPropId() + " on " + _startDate.toString()+", ends on "+_endDate);
-		return true;
+		return _startDate;
 	}
 
 }
