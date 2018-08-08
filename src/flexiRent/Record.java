@@ -7,33 +7,47 @@ public class Record {
 	private DateTime _returnDate = new DateTime();
 	private double _rentFee;
 	private double _lateFee;
-	public Record(/*String recordID, DateTime startDate, DateTime endDate,*/DateTime returnDate, double rentFee, double lateFee) {
-		/*_recordID = recordID.replace("/","");
-		_startDate=startDate;
-		_endDate=endDate;*/
-		_returnDate=returnDate;
-		_rentFee=rentFee;
-		_lateFee=lateFee;
-	}
-	public Record(String recordID, DateTime startDate, DateTime endDate) {
-		_recordID =recordID.replace("/","");
+
+	public Record(String recordID, DateTime startDate, DateTime endDate, DateTime returnDate, double rentFee,
+			double lateFee) {
+		_recordID = recordID; 
 		_startDate=startDate;
 		_endDate=endDate;
+		_returnDate = returnDate;
+		_rentFee = rentFee;
+		_lateFee = lateFee;
 	}
+
+	public Record(String recordID, DateTime startDate, DateTime endDate) {
+		_recordID = recordID.replace("/", "");
+		_startDate = startDate;
+		_endDate = endDate;
+	}
+
 	public String getRecordID() {
 		return _recordID;
 	}
-
+	public DateTime getStartDat() {
+		return _startDate;
+	}
+	public DateTime getEndDat() {
+		return _endDate;
+	}
 	@Override
 	public String toString() {
-		return _recordID+":"+_startDate.toString()+":"+_endDate.toString()+":"+_returnDate.toString()
-			+":"+_rentFee+":"+_lateFee;
+		if (_rentFee == 0.0) {
+			return _recordID + ":" + _startDate.toString() + ":" + _endDate.toString() + " : none : none : none";
+		} else {
+			return _recordID + ":" + _startDate.toString() + ":" + _endDate.toString() + ":" + _returnDate.toString()
+					+ ":" + _rentFee + ":" + _lateFee;
+		}
+
 	}
 
-	public String getDetails(String recordID, DateTime startDate, DateTime endDate) {
+	public String getDetails() {
 
-		return "Record ID:" + "\t" + recordID + "\n" +
-				"Rent Date:"+ "\t" + startDate.toString() + "\n" +
-				"Estimated Return Date:"+"\t" + startDate.toString();
+		return "Record ID:" + "\t" + _recordID + "\n" + 
+				"Rent Date:" + "\t" + _startDate.toString() + "\n" + 
+				"Estimated Return Date:" + "\t" + _startDate.toString();
 	}
 }
