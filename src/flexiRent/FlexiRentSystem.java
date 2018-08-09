@@ -9,14 +9,6 @@ public class FlexiRentSystem {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		FlexiRentSystem admin = new FlexiRentSystem();
-		/*admin.addProp();
-		//admin.addProp();
-		System.out.println();
-		System.out.println();		
-		admin.rentProp();
-		System.out.println();
-		System.out.println();
-		admin.returnProp();*/
 		while (true){
 			System.out.println("**** FLEXIRENT SYSTEM MENU **** ");
 			System.out.println("Add Property:                  1");
@@ -55,10 +47,20 @@ public class FlexiRentSystem {
 		sc.nextLine();
 		if (input == 1)
 			_isApt = true;
-		else
-			_isApt = false;
+		else {
+			if (input == 0) {
+				_isApt = false;
+			} else
+				return;
+		}
 		System.out.println("Property ID:");
 		String _propId = sc.nextLine();
+		String propId = _propId.substring(0, 2);
+		if (_isApt) {
+			if (!propId.equals("A_")) return;
+		}else {
+			if (!propId.equals("S_")) return;
+		}
 		System.out.println("Street number:");
 		String _streetNum = sc.nextLine();
 		System.out.println("Street name:");
