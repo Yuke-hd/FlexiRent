@@ -23,4 +23,16 @@ class Apartment extends Property{
 				super.getRecords()+"\n";
 	}
 	
+	@Override
+	public boolean performMaintenance() {
+		System.out.println("Apartment "+super.getPropId()+" is now under maintenance");
+		return true;
+	}
+
+	@Override
+	public boolean completeMaintenance(DateTime completionDate) {
+		
+		return false;
+	}
+	
 }

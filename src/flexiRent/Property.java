@@ -12,6 +12,7 @@ public abstract class Property {
 	private boolean _isRented = false;
 	private LinkedList<Record> propRecord = new LinkedList<Record>();
 
+
 	public Property(String propId, String streetNum, String streetName, String suburb, int bedNum, boolean isApt,
 			boolean isRented) {
 		_propId = propId;
@@ -58,6 +59,7 @@ public abstract class Property {
 	public int getBedNum() {
 		return _bedNum;
 	}
+	
 
 	public String setRecordID(String propID, String customerId) {
 		DateTime today = new DateTime();
@@ -147,21 +149,11 @@ public abstract class Property {
 
 		return lateFee;
 	}
+	
+	public abstract boolean performMaintenance();
+	public abstract boolean completeMaintenance(DateTime completionDate);
+	
 	public abstract String getDetails();
-	/*public String getDetails() {
-		String status;
-		if (_isRented) {
-			status = "Rented";
-		}else status ="Available";
-
-		return "Property ID:" + "\t" + _propId + "\n" + 
-				"Address:" + "\t" + _streetNum+" "+_streetName+" "+_suburb + "\n" + 
-				"Type:" + "\t" + this.getClass().getSimpleName()+"\n"+
-				"Bedroom:"+ "\t"+ _bedNum+"\n"+
-				"Status:" +"\t"+ status+"\n"+
-				"RENTAL RECORD"+"\n"+
-				getRecords()+"\n";
-	}*/
 	
 	public String getRecords() {
 		String rec="";

@@ -31,10 +31,10 @@ public class FlexiRentSystem {
 				admin.returnProp();
 				break;
 			case 4:
-				// TODO add maintenance method
+				admin.performMaintenance();
 				break;
 			case 5:
-				// TODO add finish maintenance method
+				admin.completeMaintenance();
 				break;
 			case 6:
 				admin.displayAllProp();
@@ -162,5 +162,26 @@ public class FlexiRentSystem {
 		}
 	}
 
+	public void performMaintenance() {
+		int objNum = inputPropID();
+		if (objNum < 0 || allProp.get(objNum).getStat()) {
+			System.out.println("Invalid property ID");
+			return;
+		}
+		allProp.get(objNum).setStat1(allProp.get(objNum).performMaintenance());
+		return;
+	}
+	
+	public void completeMaintenance() {
+		System.out.println("Enter property id: ");
+		int objNum = inputPropID();
+		if (objNum < 0 || !allProp.get(objNum).getStat()) {
+			System.out.println("Invalid property ID");
+			return;
+		}
+		System.out.println("Maintenance completion date (dd/mm/yyyy): ");
+		DateTime cmptDate = inputDate(sc.nextLine());
+		allProp.get(objNum).setStat1(allProp.get(objNum).completeMaintenance(cmptDate));
+	}
 
 }

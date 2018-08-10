@@ -7,7 +7,6 @@ public class Record {
 	private DateTime _returnDate = new DateTime();
 	private double _rentFee;
 	private double _lateFee;
-
 	public Record(String recordID, DateTime startDate, DateTime endDate, DateTime returnDate, double rentFee,
 			double lateFee) {
 		_recordID = recordID; 

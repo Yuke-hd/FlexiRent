@@ -1,11 +1,11 @@
 package flexiRent;
 
 class Suite extends Property{
-
+	DateTime _mntDate;
 	public Suite(String propId, String streetNum, String streetName, String suburb
 			) {
 		super(propId, streetNum, streetName, suburb, 3, false, false);
-		// TODO Auto-generated constructor stub
+		
 	}
 	public String getDetails() {
 		String status;
@@ -18,8 +18,19 @@ class Suite extends Property{
 				"Type:" + "\t" + this.getClass().getSimpleName()+"\n"+
 				"Bedroom:"+ "\t"+ super.getBedNum()+"\n"+
 				"Status:" +"\t"+ status+"\n"+
-				"Last maintenance:"+"\n"+
+				"Last maintenance:"+_mntDate+"\n"+
 				"RENTAL RECORD"+"\n"+
 				super.getRecords()+"\n";
+	}
+	
+	@Override
+	public boolean performMaintenance() {
+		System.out.println("Suite "+super.getPropId()+" is now under maintenance");
+		return true;
+	}
+	@Override
+	public boolean completeMaintenance(DateTime completionDate) {
+		_mntDate = completionDate;
+		return false;
 	}
 }
