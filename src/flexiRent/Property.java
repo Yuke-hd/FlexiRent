@@ -24,6 +24,9 @@ public abstract class Property {
 
 	}
 
+	public boolean getType() {
+		return _isApt;
+	}
 	public boolean getStat() {
 		return _isRented;
 	}
@@ -78,9 +81,6 @@ public abstract class Property {
 
 	// 123
 	public boolean returnProperty(DateTime returnDate) {
-		//this.setStat0();
-		String customerId = getCustID();
-		String recordID = setRecordID(getPropId(), customerId);
 		double fee = this.getFee(this._isApt, propRecord.get(0).getStartDat(),propRecord.get(0).getEndDat(), returnDate);
 		double lateFee=this.getLateFee(this._isApt, propRecord.get(0).getEndDat(), returnDate);
 		Record record = new Record(propRecord.get(0).getRecordID(), propRecord.get(0).getStartDat(),
@@ -147,8 +147,8 @@ public abstract class Property {
 
 		return lateFee;
 	}
-	
-	public String getDetails() {
+	public abstract String getDetails();
+	/*public String getDetails() {
 		String status;
 		if (_isRented) {
 			status = "Rented";
@@ -160,9 +160,10 @@ public abstract class Property {
 				"Bedroom:"+ "\t"+ _bedNum+"\n"+
 				"Status:" +"\t"+ status+"\n"+
 				"RENTAL RECORD"+"\n"+
-				getRecords();
-	}
-	private String getRecords() {
+				getRecords()+"\n";
+	}*/
+	
+	public String getRecords() {
 		String rec="";
 		for(int i = 0; i<propRecord.size();i++) {
 			rec +=propRecord.get(i).getDetails()+"\n";

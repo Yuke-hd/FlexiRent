@@ -100,4 +100,42 @@ public class DateTime
 		{
 			advance = ((days * 24L + hours) * 60L) * 60000L;
 		}
+	
+	// return weekday according to the Date
+	public static int calcWeekDay(String Date) {
+		String[] datePart = Date.split("/");
+		int d = Integer.parseInt(datePart[0]);
+		int m = Integer.parseInt(datePart[1]);
+		int y = Integer.parseInt(datePart[2]);
+		int weekDay = -1;
+		if (m == 1 || m == 2) {
+			m += 12;
+			y--;
+		}
+		int iWeek = (d + 2 * m + 3 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400) % 7;
+		switch (iWeek) {
+		case 0:
+			weekDay = 1;
+			break;
+		case 1:
+			weekDay = 2;
+			break;
+		case 2:
+			weekDay = 3;
+			break;
+		case 3:
+			weekDay = 4;
+			break;
+		case 4:
+			weekDay = 5;
+			break;
+		case 5:
+			weekDay = 6;
+			break;
+		case 6:
+			weekDay = 0;
+			break;
+		}
+		return weekDay;
+	}
 }
