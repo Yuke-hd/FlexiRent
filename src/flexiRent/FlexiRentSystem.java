@@ -36,7 +36,7 @@ public class FlexiRentSystem {
 				admin.displayAllProp();break;
 			case 7:System.exit(0);
 			default: break;
-			}
+			}//sc.close();
 		}
 	}
 
@@ -80,7 +80,7 @@ public class FlexiRentSystem {
 
 	public boolean rentProp() {
 		int objNum = inputPropID();
-		if (objNum<0) {
+		if (objNum<0||allProp.get(objNum).getStat()) {
 			System.out.println("Invalid property ID");
 			return false;
 		}
@@ -90,7 +90,8 @@ public class FlexiRentSystem {
 		DateTime _startDate = inputDate();
 		System.out.println("How many days?:");
 		int _rentDay = sc.nextInt();sc.nextLine();
-		return allProp.get(objNum).rent(_custID, _startDate, _rentDay);
+		allProp.get(objNum).setStat1(allProp.get(objNum).rent(_custID, _startDate, _rentDay));
+		return true;
 	}
 	private DateTime inputDate() {
 		String _inputDate = sc.nextLine();
@@ -110,7 +111,7 @@ public class FlexiRentSystem {
 		}
 		System.out.println("Return date (dd/mm/yyyy):");
 		DateTime returnDate = inputDate();
-		allProp.get(objNum).returnProperty(returnDate);
+		allProp.get(objNum).setStat1(allProp.get(objNum).returnProperty(returnDate));
 		return true;
 	}
 	

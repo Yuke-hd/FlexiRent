@@ -45,9 +45,17 @@ public class Record {
 	}
 
 	public String getDetails() {
-
+		if (_rentFee == 0.0) {
 		return "Record ID:" + "\t" + _recordID + "\n" + 
 				"Rent Date:" + "\t" + _startDate.toString() + "\n" + 
-				"Estimated Return Date:" + "\t" + _startDate.toString();
+				"Estimated Return Date:" + "\t" + _endDate.toString();
+		} else {
+			return "Record ID:" + "\t" + _recordID + "\n" + 
+					"Rent Date:" + "\t" + _startDate.toString() + "\n" + 
+					"Estimated Return Date:" + "\t" + _startDate.toString()+"\n" +
+					"Actual Return Date:"+ "\t" + _returnDate.toString()+"\n" +
+					"Rental Fee:"+ "\t" + _rentFee+"\n" +
+					"Late Fee:"+ "\t" + _lateFee;
+		}
 	}
 }
