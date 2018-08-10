@@ -9,34 +9,42 @@ public class FlexiRentSystem {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		FlexiRentSystem admin = new FlexiRentSystem();
-		while (true){
+		while (true) {
 			System.out.println("**** FLEXIRENT SYSTEM MENU **** ");
 			System.out.println("Add Property:                  1");
 			System.out.println("Rent Property:                 2");
 			System.out.println("Return Property:               3");
-			System.out.println("Property Maintenance:          4"); 
+			System.out.println("Property Maintenance:          4");
 			System.out.println("Complete Maintenance:          5");
 			System.out.println("Display All Properties:        6");
 			System.out.println("Exit Program:                  7");
-			int x = sc.nextInt();sc.nextLine();
+			int x = sc.nextInt();
+			sc.nextLine();
 			switch (x) {
 			case 1:
-				admin.addProp();break;
+				admin.addProp();
+				break;
 			case 2:
-				admin.rentProp();break;
+				admin.rentProp();
+				break;
 			case 3:
-				admin.returnProp();break;
+				admin.returnProp();
+				break;
 			case 4:
-				//TODO add maintenance method
+				// TODO add maintenance method
 				break;
 			case 5:
-				//TODO add finish maintenance method
+				// TODO add finish maintenance method
 				break;
 			case 6:
-				admin.displayAllProp();break;
-			case 7:System.exit(0);
-			default: break;
-			}//sc.close();
+				admin.displayAllProp();
+				break;
+			case 7:
+				System.exit(0);
+			case 8: break;
+			default:
+				break;
+			}// sc.close();
 		}
 	}
 
@@ -57,9 +65,11 @@ public class FlexiRentSystem {
 		String _propId = sc.nextLine();
 		String propId = _propId.substring(0, 2);
 		if (_isApt) {
-			if (!propId.equals("A_")) return;
-		}else {
-			if (!propId.equals("S_")) return;
+			if (!propId.equals("A_"))
+				return;
+		} else {
+			if (!propId.equals("S_"))
+				return;
 		}
 		System.out.println("Street number:");
 		String _streetNum = sc.nextLine();
@@ -69,7 +79,8 @@ public class FlexiRentSystem {
 		String _suburb = sc.nextLine();
 		if (_isApt) {
 			System.out.println("Bed number");
-			int _bedNum = sc.nextInt();sc.nextLine();
+			int _bedNum = sc.nextInt();
+			sc.nextLine();
 			Apartment apt = new Apartment(_propId, _streetNum, _streetName, _suburb, _bedNum);
 			allProp.add(apt);
 		} else {
@@ -80,7 +91,7 @@ public class FlexiRentSystem {
 
 	public boolean rentProp() {
 		int objNum = inputPropID();
-		if (objNum<0||allProp.get(objNum).getStat()) {
+		if (objNum < 0 || allProp.get(objNum).getStat()) {
 			System.out.println("Invalid property ID");
 			return false;
 		}
@@ -89,10 +100,12 @@ public class FlexiRentSystem {
 		System.out.println("Rent date (dd/mm/yyyy):");
 		DateTime _startDate = inputDate();
 		System.out.println("How many days?:");
-		int _rentDay = sc.nextInt();sc.nextLine();
+		int _rentDay = sc.nextInt();
+		sc.nextLine();
 		allProp.get(objNum).setStat1(allProp.get(objNum).rent(_custID, _startDate, _rentDay));
 		return true;
 	}
+	
 	private DateTime inputDate() {
 		String _inputDate = sc.nextLine();
 		String[] _datePart = _inputDate.split("/");
@@ -100,12 +113,12 @@ public class FlexiRentSystem {
 		int _month = Integer.parseInt(_datePart[1]);
 		int _year = Integer.parseInt(_datePart[2]);
 		DateTime _startDate = new DateTime(_day, _month, _year);
-		return _startDate;
+		return _startDate;//@return date for rentProp() and ReturnProp()
 	}
-
+	
 	public boolean returnProp() {
 		int objNum = inputPropID();
-		if (objNum<0) {
+		if (objNum < 0) {
 			System.out.println("Invalid property ID");
 			return false;
 		}
@@ -114,7 +127,7 @@ public class FlexiRentSystem {
 		allProp.get(objNum).setStat1(allProp.get(objNum).returnProperty(returnDate));
 		return true;
 	}
-	
+
 	private int inputPropID() {
 		System.out.println("Please input property ID:");
 		String _propId = sc.nextLine();
@@ -122,15 +135,16 @@ public class FlexiRentSystem {
 		for (int i = 0; i < allProp.size(); i++) {
 			if (_propId.equals(allProp.get(i).getPropId())) {
 				objNum = i;
-				System.out.println("valid property ID");
-			} 
+				// System.out.println("valid property ID");
+			}
 		}
 		return objNum;
 	}
+
 	public void displayAllProp() {
 		System.out.println("==================================");
-		for(int i=0; i<allProp.size();i++) {
-			//TODO add getDetails() in Property
+		for (int i = 0; i < allProp.size(); i++) {
+			// TODO add getDetails() in Property
 			System.out.println(allProp.get(i).getDetails());
 			System.out.println("==================================");
 		}
