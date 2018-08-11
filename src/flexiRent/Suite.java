@@ -1,7 +1,7 @@
 package flexiRent;
 
 class Suite extends Property{
-	DateTime _mntDate;
+	DateTime _mntDate= new DateTime();
 	public Suite(String propId, String streetNum, String streetName, String suburb
 			) {
 		super(propId, streetNum, streetName, suburb, 3, false, false);
@@ -33,4 +33,10 @@ class Suite extends Property{
 		_mntDate = completionDate;
 		return false;
 	}
+	@Override
+	public String toString() {
+		return super.getPropId() + super.getStreetNum() + super.getStreetName() + super.getSuburb() + 
+				this.getClass().getSimpleName() + super.getBedNum() + super.getTypeName()+this._mntDate;
+	}
+
 }

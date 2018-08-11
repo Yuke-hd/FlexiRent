@@ -52,7 +52,7 @@ public class Record {
 		} else {
 			return "Record ID:" + "\t" + _recordID + "\n" + 
 					"Rent Date:" + "\t" + _startDate.toString() + "\n" + 
-					"Estimated Return Date:" + "\t" + _startDate.toString()+"\n" +
+					"Estimated Return Date:" + "\t" + _endDate.toString()+"\n" +
 					"Actual Return Date:"+ "\t" + _returnDate.toString()+"\n" +
 					"Rental Fee:"+ "\t" + String.format("%.2f", _rentFee)+"\n" +
 					"Late Fee:"+ "\t" + String.format("%.2f", _lateFee)+ "\n"+

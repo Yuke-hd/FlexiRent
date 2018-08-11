@@ -28,6 +28,11 @@ public abstract class Property {
 	public boolean getType() {
 		return _isApt;
 	}
+	public String getTypeName() {
+		if (_isApt) {
+			return "Apartment";
+		} else return "Suite";
+	}
 	public boolean getStat() {
 		return _isRented;
 	}
@@ -60,7 +65,6 @@ public abstract class Property {
 		return _bedNum;
 	}
 	
-
 	public String setRecordID(String propID, String customerId) {
 		DateTime today = new DateTime();
 		return propID + "_" + customerId + "_" + today.toString();
@@ -151,14 +155,17 @@ public abstract class Property {
 	}
 	
 	public abstract boolean performMaintenance();
+
 	public abstract boolean completeMaintenance(DateTime completionDate);
-	
+
 	public abstract String getDetails();
-	
+
 	public String getRecords() {
-		String rec="";
-		for(int i = 0; i<propRecord.size();i++) {
-			rec +=propRecord.get(i).getDetails()+"\n";
+		String rec = " empty ";
+		if (propRecord.size() == 1)
+			rec = "";
+		for (int i = 0; i < propRecord.size(); i++) {
+			rec += propRecord.get(i).getDetails() + "\n";
 		}
 		return rec;
 	}

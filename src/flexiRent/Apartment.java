@@ -15,7 +15,7 @@ class Apartment extends Property{
 		}else status ="Available";
 
 		return "Property ID:" + "\t" + super.getPropId() + "\n" + 
-				"Address:" + "\t" + super.getStreetNum()+" "+super.getStreetName()+" "+super.getSuburb()+ "\n" + 
+				"Address:" + "\t" + super.getStreetNum()+","+super.getStreetName()+","+super.getSuburb()+ "\n" + 
 				"Type:" + "\t" + this.getClass().getSimpleName()+"\n"+
 				"Bedroom:"+ "\t"+ super.getBedNum()+"\n"+
 				"Status:" +"\t"+ status+"\n"+
@@ -34,5 +34,9 @@ class Apartment extends Property{
 		
 		return false;
 	}
-	
+	@Override
+	public String toString() {
+		return super.getPropId() + super.getStreetNum() + super.getStreetName() + super.getSuburb() + 
+				this.getClass().getSimpleName() + super.getBedNum() + super.getTypeName();
+	}
 }

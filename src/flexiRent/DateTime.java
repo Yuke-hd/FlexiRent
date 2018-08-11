@@ -102,8 +102,9 @@ public class DateTime
 		}
 	
 	// return weekday according to the Date
-	public static int calcWeekDay(String Date) {
-		String[] datePart = Date.split("/");
+	public static int calcWeekDay(DateTime Date) {
+		String day =Date.getEightDigitDate();
+		String[] datePart = day.split("/");
 		int d = Integer.parseInt(datePart[0]);
 		int m = Integer.parseInt(datePart[1]);
 		int y = Integer.parseInt(datePart[2]);

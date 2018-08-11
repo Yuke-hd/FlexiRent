@@ -50,7 +50,7 @@ public class FlexiRentSystem {
 
 	public void addProp() {
 		boolean isApt = false;
-		System.out.println("1 for Apartment, 0 for Suite");
+		/*System.out.println("1 for Apartment, 0 for Suite");
 		int input = sc.nextInt();
 		sc.nextLine();
 		if (input == 1)
@@ -60,65 +60,70 @@ public class FlexiRentSystem {
 				isApt = false;
 			} else
 				return;
-		}
+		}*/
 		System.out.println("Property ID:");
 		String _propId = sc.nextLine();
 		for (int i =0; i<allProp.size();i++) {
-			if (_propId.equals(allProp.get(i).getPropId())) return;
+			if (_propId.equals(allProp.get(i).getPropId())) 
+				System.out.println("property id already exsits");
+				return;
 		}
 		String propId = _propId.substring(0, 2);//extract first two letter "A_"
-		if (isApt) {
+		/*if (isApt) {
 			if (!propId.equals("A_"))
 				return;
 		} else {
 			if (!propId.equals("S_"))
 				return;
-		}
+		}*/
 		System.out.println("Street number:");
 		String _streetNum = sc.nextLine();
 		System.out.println("Street name:");
 		String _streetName = sc.nextLine();
 		System.out.println("Suburb");
 		String _suburb = sc.nextLine();
-		if (isApt) {
+		if (propId.equals("A_")) {
 			System.out.println("Bed number");
 			int _bedNum = sc.nextInt();
 			sc.nextLine();
 			Apartment apt = new Apartment(_propId, _streetNum, _streetName, _suburb, _bedNum);
 			allProp.add(apt);
-		} else {
+		} else if (propId.equals("S_")){
 			Suite suite = new Suite(_propId, _streetNum, _streetName, _suburb);
 			allProp.add(suite);
+		} else {
+			System.out.println("invalid property id, must starts with \"A_\" or \"S_\"");return;
 		}
+		System.out.println(allProp.get(0).getClass().getSimpleName()+_propId+" created. ");
 	}
 
-	public boolean rentProp() {
+	public void rentProp() {
 		int objNum = inputPropID();
 		if (objNum < 0 || allProp.get(objNum).getStat()) {
 			System.out.println("Invalid property ID");
-			return false;
+			return;
 		}
 		System.out.println("Customer id:");
-		String _custID = sc.nextLine();
+		String custID = sc.nextLine();
 		System.out.println("Rent date (dd/mm/yyyy):");
-		String inputDate = sc.nextLine();
-		DateTime _startDate = inputDate(inputDate);
-		int weekDay = DateTime.calcWeekDay(inputDate);
+		DateTime startDate = inputDate();
+		int weekDay = DateTime.calcWeekDay(startDate);
 		System.out.println("How many days?:");
-		int _rentDay = sc.nextInt();sc.nextLine();
+		int rentDay = sc.nextInt();sc.nextLine();
 		if (allProp.get(objNum).getType()) {
 		if (0 <= weekDay && weekDay <= 4) {	
-			if (_rentDay <= 2 || _rentDay > 28)
-				return false;
-		} else if (_rentDay <= 3 || _rentDay > 28)
-			return false;
+			if (rentDay <= 2 || rentDay > 28)
+				return;
+		} else if (rentDay <= 3 || rentDay > 28)
+			return;
 		}
-		allProp.get(objNum).setStat1(allProp.get(objNum).rent(_custID, _startDate, _rentDay));
-		return true;
+		allProp.get(objNum).setStat1(allProp.get(objNum).rent(custID, startDate, rentDay));
+		return;
 	}
 	
-	private DateTime inputDate(String Date) {
-		String[] datePart = Date.split("/");
+	private DateTime inputDate() {
+		String inputDate = sc.nextLine();
+		String[] datePart = inputDate.split("/");
 		int day = Integer.parseInt(datePart[0]);
 		int month = Integer.parseInt(datePart[1]);
 		int year = Integer.parseInt(datePart[2]);
@@ -126,18 +131,16 @@ public class FlexiRentSystem {
 		return startDate;//@return date for rentProp() and ReturnProp()
 	}
 	
-	public boolean returnProp() {
+	public void returnProp() {
 		int objNum = inputPropID();
 		if (objNum < 0||!allProp.get(objNum).getStat()) {
 			System.out.println("Invalid property ID");
-			return false;
+			return;
 		}
 		System.out.println("Return date (dd/mm/yyyy):");
-		String inputDate = sc.nextLine();
-		DateTime returnDate = inputDate(inputDate);
-		//allProp.get(objNum).returnProperty(returnDate);
-		allProp.get(objNum).setStat1(allProp.get(objNum).returnProperty(returnDate));
-		return true;
+		DateTime returnDate = inputDate();
+		allProp.get(objNum).setStat1(!allProp.get(objNum).returnProperty(returnDate));
+		return;
 	}
 
 	private int inputPropID() {
@@ -180,7 +183,7 @@ public class FlexiRentSystem {
 			return;
 		}
 		System.out.println("Maintenance completion date (dd/mm/yyyy): ");
-		DateTime cmptDate = inputDate(sc.nextLine());
+		DateTime cmptDate = inputDate();
 		allProp.get(objNum).setStat1(allProp.get(objNum).completeMaintenance(cmptDate));
 	}
 
