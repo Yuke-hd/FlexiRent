@@ -4,9 +4,9 @@ import java.util.*;
 
 public class FlexiRentSystem {
 	Scanner sc = new Scanner(System.in);
-	private ArrayList<Property> allProp = new ArrayList<Property>();
+	private ArrayList<Property> propList = new ArrayList<Property>();
 
-	public static void main(String[] args) {
+	public void menu() {
 		Scanner sc = new Scanner(System.in);
 		FlexiRentSystem admin = new FlexiRentSystem();
 		while (true) {
@@ -18,8 +18,15 @@ public class FlexiRentSystem {
 			System.out.println("Complete Maintenance:          5");
 			System.out.println("Display All Properties:        6");
 			System.out.println("Exit Program:                  7");
-			int x = sc.nextInt();
-			sc.nextLine();
+			System.out.print("Enter your choice: ");
+			int x;
+			try {
+				x = sc.nextInt();
+				sc.nextLine();
+			} catch (Exception e) {
+				sc.nextLine();
+				x=7;
+			}
 			switch (x) {
 			case 1:
 				admin.addProp();
@@ -48,107 +55,117 @@ public class FlexiRentSystem {
 		}
 	}
 
-	public void addProp() {
-		boolean isApt = false;
-		/*System.out.println("1 for Apartment, 0 for Suite");
-		int input = sc.nextInt();
-		sc.nextLine();
-		if (input == 1)
-			isApt = true;
-		else {
-			if (input == 0) {
-				isApt = false;
-			} else
-				return;
-		}*/
-		System.out.println("Property ID:");
-		String _propId = sc.nextLine();
-		for (int i =0; i<allProp.size();i++) {
-			if (_propId.equals(allProp.get(i).getPropId())) 
-				System.out.println("property id already exsits");
-				return;
+	private void addProp() {
+		System.out.printf("\n"+"**** add property ****"+"\n"+"Property ID:");
+		String propId = sc.nextLine();
+		for (int i =0; i<propList.size();i++) {
+			if (propId.equals(propList.get(i).getPropId())) 
+				{System.out.println("property id already exsits");
+				return;}
 		}
-		String propId = _propId.substring(0, 2);//extract first two letter "A_"
-		/*if (isApt) {
-			if (!propId.equals("A_"))
-				return;
-		} else {
-			if (!propId.equals("S_"))
-				return;
-		}*/
+		String propId0 = propId.substring(0, 2);
+		if (!(propId0.equals("A_")||propId0.equals("S_"))) {
+			System.out.println("invalid property id, must starts with \"A_\" or \"S_\""+"\n");return;
+		}
 		System.out.println("Street number:");
-		String _streetNum = sc.nextLine();
+		String streetNum = sc.nextLine();
 		System.out.println("Street name:");
-		String _streetName = sc.nextLine();
+		String streetName = sc.nextLine();
 		System.out.println("Suburb");
-		String _suburb = sc.nextLine();
-		if (propId.equals("A_")) {
-			System.out.println("Bed number");
-			int _bedNum = sc.nextInt();
-			sc.nextLine();
-			Apartment apt = new Apartment(_propId, _streetNum, _streetName, _suburb, _bedNum);
-			allProp.add(apt);
-		} else if (propId.equals("S_")){
-			Suite suite = new Suite(_propId, _streetNum, _streetName, _suburb);
-			allProp.add(suite);
-		} else {
-			System.out.println("invalid property id, must starts with \"A_\" or \"S_\"");return;
-		}
-		System.out.println(allProp.get(0).getClass().getSimpleName()+_propId+" created. ");
+		String suburb = sc.nextLine();
+		if (propId.startsWith("A_")) {
+			int bedNum;
+			do {bedNum=0;
+				try {
+					System.out.println("Bed number(1-3)");
+					bedNum = sc.nextInt();
+					sc.nextLine();
+				} catch (Exception e) {
+					sc.nextLine();
+					System.out.println("try again");
+					continue;
+				}
+			} while (bedNum>3||bedNum<1);
+			Apartment apt = new Apartment(propId, streetNum, streetName, suburb, bedNum);
+			propList.add(apt);
+		} else if (propId.startsWith("S_")){
+			Suite suite = new Suite(propId, streetNum, streetName, suburb);
+			System.out.println("Set Maintenance Date: ");
+			DateTime MntDate = inputDate();
+			suite.setMntDate(MntDate);
+			propList.add(suite);
+		} 
+		System.out.println(propList.get(propList.size()-1).getClass().getSimpleName()+" "+propId+" created. "+"\n");
 	}
 
-	public void rentProp() {
+	private void rentProp() {
+		System.out.printf("\n"+"**** rent property ****"+"\n");
 		int objNum = inputPropID();
-		if (objNum < 0 || allProp.get(objNum).getStat()) {
-			System.out.println("Invalid property ID");
+		if (objNum < 0 || propList.get(objNum).getStat()) {
+			System.out.println("Invalid property ID"+"\n");
 			return;
 		}
 		System.out.println("Customer id:");
 		String custID = sc.nextLine();
 		System.out.println("Rent date (dd/mm/yyyy):");
 		DateTime startDate = inputDate();
-		int weekDay = DateTime.calcWeekDay(startDate);
 		System.out.println("How many days?:");
 		int rentDay = sc.nextInt();sc.nextLine();
-		if (allProp.get(objNum).getType()) {
-		if (0 <= weekDay && weekDay <= 4) {	
-			if (rentDay <= 2 || rentDay > 28)
-				return;
-		} else if (rentDay <= 3 || rentDay > 28)
-			return;
-		}
-		allProp.get(objNum).setStat1(allProp.get(objNum).rent(custID, startDate, rentDay));
+		propList.get(objNum).setStat1(propList.get(objNum).rent(custID, startDate, rentDay));
+		System.out.println();
 		return;
 	}
 	
+	/**
+	 * input a date method for rentProp() and returnProp()
+	* @return dd/mm/yyyy format date
+	* @see FlexiRentSystem.rentProp
+	* @see FlexiRentSystem.returnProp
+	*/
 	private DateTime inputDate() {
-		String inputDate = sc.nextLine();
-		String[] datePart = inputDate.split("/");
-		int day = Integer.parseInt(datePart[0]);
-		int month = Integer.parseInt(datePart[1]);
-		int year = Integer.parseInt(datePart[2]);
-		DateTime startDate = new DateTime(day, month, year);
-		return startDate;//@return date for rentProp() and ReturnProp()
+		String inputDate;
+		int day,month,year;
+		do {
+			try {
+				inputDate = sc.nextLine();
+				String[] datePart = inputDate.split("/");
+				day = Integer.parseInt(datePart[0]);
+				month = Integer.parseInt(datePart[1]);
+				year = Integer.parseInt(datePart[2]);
+				break;
+			} catch (Exception e) {
+				System.out.println("not a valid date, try again.");
+				continue;
+			}
+		} while (true);
+		DateTime Date = new DateTime(day, month, year);
+		return Date;
 	}
 	
-	public void returnProp() {
+	private void returnProp() {
+		System.out.printf("\n"+"**** return property ****"+"\n");
 		int objNum = inputPropID();
-		if (objNum < 0||!allProp.get(objNum).getStat()) {
-			System.out.println("Invalid property ID");
+		if (objNum < 0||!propList.get(objNum).getStat()) {
+			System.out.println("property does not exsit or not rented"+"\n");
 			return;
 		}
 		System.out.println("Return date (dd/mm/yyyy):");
 		DateTime returnDate = inputDate();
-		allProp.get(objNum).setStat1(!allProp.get(objNum).returnProperty(returnDate));
+		propList.get(objNum).setStat1(!propList.get(objNum).returnProperty(returnDate));
 		return;
 	}
-
+	/**
+	 * input property id method for rentProp() and returnProp()
+	* @return the corresponding property No. of the user inputed property id 
+	* @see FlexiRentSystem.rentProp
+	* @see FlexiRentSystem.returnProp
+	*/
 	private int inputPropID() {
 		System.out.println("Please input property ID:");
 		String _propId = sc.nextLine();
 		int objNum = -1;
-		for (int i = 0; i < allProp.size(); i++) {
-			if (_propId.equals(allProp.get(i).getPropId())) {
+		for (int i = 0; i < propList.size(); i++) {
+			if (_propId.equals(propList.get(i).getPropId())) {
 				objNum = i;
 				// System.out.println("valid property ID");
 			}
@@ -156,35 +173,43 @@ public class FlexiRentSystem {
 		return objNum;
 	}
 
-	public void displayAllProp() {
+	private void displayAllProp() {
 		System.out.println("==================================");
-		for (int i = 0; i < allProp.size(); i++) {
+		for (int i = 0; i < propList.size(); i++) {
 			// TODO add getDetails() in Property
-			System.out.println(allProp.get(i).getDetails());
+			System.out.println(propList.get(i).getDetails());
 			System.out.println("==================================");
 		}
 	}
 
-	public void performMaintenance() {
+	private void performMaintenance() {
+		System.out.printf("\n"+"**** Maintenance ****"+"\n");
 		int objNum = inputPropID();
-		if (objNum < 0 || allProp.get(objNum).getStat()) {
-			System.out.println("Invalid property ID");
+		if (objNum < 0 || propList.get(objNum).getStat()) {
+			System.out.println("property does not exsit or is rented"+"\n");
 			return;
 		}
-		allProp.get(objNum).setStat1(allProp.get(objNum).performMaintenance());
+		propList.get(objNum).setStat1(propList.get(objNum).performMaintenance());
 		return;
 	}
 	
-	public void completeMaintenance() {
-		System.out.println("Enter property id: ");
+	private void completeMaintenance() {
+		System.out.printf("\n"+"**** Complete Maintenance ****"+"\n");
 		int objNum = inputPropID();
-		if (objNum < 0 || !allProp.get(objNum).getStat()) {
-			System.out.println("Invalid property ID");
+		if (objNum < 0 || !propList.get(objNum).getStat()) {
+			System.out.println("property does not exsit or not under maintenance"+"\n");
 			return;
 		}
 		System.out.println("Maintenance completion date (dd/mm/yyyy): ");
 		DateTime cmptDate = inputDate();
-		allProp.get(objNum).setStat1(allProp.get(objNum).completeMaintenance(cmptDate));
+		if (propList.get(objNum) instanceof Suite) {
+			if (DateTime.diffDays(cmptDate, ((Suite) propList.get(objNum)).getMntDate())>10) {
+				System.out.println("Last maintenance date: "+((Suite) propList.get(objNum)).getMntDate().toString()+", Maintenance interval for suites must be less than 10 days");
+				return;
+			}
+			
+		};
+		propList.get(objNum).setStat1(propList.get(objNum).completeMaintenance(cmptDate));
 	}
 
 }

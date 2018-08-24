@@ -101,9 +101,13 @@ public class DateTime
 			advance = ((days * 24L + hours) * 60L) * 60000L;
 		}
 	
-	// return weekday according to the Date
+		/**
+		 * calculate the week day of a give date
+		 * @param Date dd/mm/yyyy
+		* @return weekDay 1-6 (0 for Sunday)
+		*/
 	public static int calcWeekDay(DateTime Date) {
-		String day =Date.getEightDigitDate();
+		String day =Date.getFormattedDate();
 		String[] datePart = day.split("/");
 		int d = Integer.parseInt(datePart[0]);
 		int m = Integer.parseInt(datePart[1]);

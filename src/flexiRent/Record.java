@@ -2,9 +2,9 @@ package flexiRent;
 
 public class Record {
 	private String _recordID;
-	private DateTime _startDate = new DateTime();
-	private DateTime _endDate = new DateTime();
-	private DateTime _returnDate = new DateTime();
+	private DateTime _startDate;
+	private DateTime _endDate;
+	private DateTime _returnDate;
 	private double _rentFee;
 	private double _lateFee;
 	public Record(String recordID, DateTime startDate, DateTime endDate, DateTime returnDate, double rentFee,
@@ -32,13 +32,14 @@ public class Record {
 	public DateTime getEndDat() {
 		return _endDate;
 	}
+
 	@Override
 	public String toString() {
 		if (_rentFee == 0.0) {
 			return _recordID + ":" + _startDate.toString() + ":" + _endDate.toString() + " : none : none : none";
 		} else {
 			return _recordID + ":" + _startDate.toString() + ":" + _endDate.toString() + ":" + _returnDate.toString()
-					+ ":" + _rentFee + ":" + _lateFee;
+					+ ":" + String.format("%.2f", _rentFee) + ":" + String.format("%.2f", _lateFee);
 		}
 
 	}
